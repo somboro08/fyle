@@ -196,11 +196,12 @@ class _FyfaceHomeState extends State<FyfaceHome> {
     final connectivity = Connectivity();
     try {
       final current = await connectivity.checkConnectivity();
-      if (mounted)
+      if (mounted) {
         setState(
           () => _offline =
               current.isEmpty || current.contains(ConnectivityResult.none),
         );
+      }
       if (!_offline) _syncPendingDocuments();
       _networkSubscription = connectivity.onConnectivityChanged.listen(
         (results) {
@@ -1236,11 +1237,12 @@ class _LoginScreenState extends State<LoginScreen> {
     } on AuthException catch (e) {
       if (mounted) setState(() => _error = e.message);
     } catch (_) {
-      if (mounted)
+      if (mounted) {
         setState(
           () => _error =
               'Connexion impossible. Vérifie ta connexion et réessaie.',
         );
+      }
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -1435,17 +1437,19 @@ class _AddDocumentSheetState extends State<AddDocumentSheet> {
         setState(() {
           _selectedPath = file.path;
           _selectedFileName = file.name;
-          if (_name.text.trim().isEmpty)
+          if (_name.text.trim().isEmpty) {
             _name.text = file.name.replaceFirst(RegExp(r'\.[^.]+$'), '');
+          }
         });
       }
     } catch (_) {
-      if (mounted)
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Impossible d’ouvrir le sélecteur de fichiers.'),
           ),
         );
+      }
     } finally {
       if (mounted) setState(() => _picking = false);
     }
